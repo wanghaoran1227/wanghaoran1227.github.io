@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>陈泽的个人介绍</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+
+    /* 导航栏样式 */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .logo .code {
+      color: #0066cc;
+    }
+
+    .logo .blog {
+      color: #e63946;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    .nav-menu a:hover {
+      color: #0066cc;
+    }
+
+    /* 主体样式 */
+    body {
+      background-color: #f3f3f3;
+      padding-top: 80px;
+      min-height: 100vh;
+    }
+
+    /* 个人介绍容器 */
+    .profile-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #09d9d9;
+      padding: 40px 60px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      gap: 40px;
+    }
+
+    .profile-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .profile-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .profile-title span {
+      color: #e63946;
+    }
+
+    .profile-desc {
+      font-size: 1.1rem;
+      color: #fff;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #165dff;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0040c9;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #f0f2f5;
+      justify-content: center;
+      align-items: center;
+      color: #666;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .social-icons a:hover {
+      background-color: #165dff;
+      color: #fff;
+    }
+
+    .profile-img {
+      flex-shrink: 0;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 8px solid #fff;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /* 精选文章展示区 */
+    .articles-section {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 80px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background-color: #09d9d9;
+      margin: 10px auto;
+      border-radius: 2px;
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .article-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      transition: transform 0.3s;
+    }
+
+    .article-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .article-title {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .article-date {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .article-desc {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .article-btn {
+      display: inline-block;
+      background-color: #09d9d9;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .article-btn:hover {
+      background-color: #07b8b8;
+    }
+
+    /* 技能/兴趣标签云 */
+    .tags-section {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .tags-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .tag {
+      padding: 10px 20px;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .tag:hover {
+      transform: scale(1.05);
+    }
+
+    .tag-1 {
+      background-color: #165dff;
+    }
+
+    .tag-2 {
+      background-color: #09d9d9;
+    }
+
+    .tag-3 {
+      background-color: #e63946;
+    }
+
+    .tag-4 {
+      background-color: #457b9d;
+    }
+
+    .tag-5 {
+      background-color: #1d3557;
+    }
+
+    .tag-6 {
+      background-color: #f1faee;
+      color: #333;
+      border: 1px solid #09d9d9;
+    }
+
+    /* 页脚 */
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 40px 0;
+      margin-top: 50px;
+    }
+
+    .footer-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-social a {
+      color: #fff;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    .footer-social a:hover {
+      color: #09d9d9;
+    }
+
+    .footer-info {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .footer-info p {
+      margin: 5px 0;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+
+      .nav-menu {
+        gap: 15px;
+      }
+
+      .profile-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 30px 20px;
+        width: 95%;
+      }
+
+      .profile-title {
+        font-size: 2rem;
+      }
+
+      .profile-img {
+        width: 200px;
+        height: 200px;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .tags-section {
+        padding: 20px;
+      }
+
+      .tag {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <a href="#" class="logo">
+      <span class="code">Code</span><span class="blog">Blog</span>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="./首页.html">首页</a></li>
+      <li><a href="./博客.html">博客</a></li>
+      <li><a href="./作品集.html">作品集</a></li>
+      <li><a href="./关于我.html">关于我</a></li>
+      <li><a href="./文章示例.html">文章示例</a></li>
+    </ul>
+  </nav>
+
+  <!-- 个人介绍主体 -->
+  <div class="profile-container">
+    <div class="profile-text">
+      <h1 class="profile-title">大家好，我是<span>陈泽</span></h1>
+      <p class="profile-desc">
+        九色传媒我来了
+      </p>
+      <a href="#" class="btn">了解更多</a>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-weibo"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="profile-img">
+      <img src="f81f85316f791c550dfb93876f7a7d10.jpg" alt="陈泽头像">
+    </div>
+  </div>
+
+  <!-- 精选文章展示区 -->
+  <section class="articles-section">
+    <h2 class="section-title">精选文章</h2>
+    <div class="articles-grid">
+      <!-- 文章卡片1 -->
+      <div class="article-card">
+        <h3 class="article-title">HTML+CSS 零基础入门指南</h3>
+        <span class="article-date">2026-01-01</span>
+        <p class="article-desc">本文详细讲解了HTML和CSS的基础语法，以及如何快速搭建一个静态页面，适合前端新手入门学习。</p>
+        <a href="#" class="article-btn">阅读更多</a>
+      </div>
+      <!-- 文章卡片2 -->
+      <div class="article-card">
+        <h3 class="article-title">Flex布局实战：响应式导航栏制作</h3>
+        <span class="article-date">2025-12-25</span>
+        <p class="article-desc">通过实际案例讲解Flex布局的核心属性，教你快速制作适配移动端的导航栏，提升页面布局效率。</p>
+        <a href="#" class="article-btn">阅读更多</a>
+      </div>
+      <!-- 文章卡片3 -->
+      <div class="article-card">
+        <h3 class="article-title">JavaScript 异步编程之Promise详解</h3>
+        <span class="article-date">2025-12-20</span>
+        <p class="article-desc">深入解析Promise的原理和使用方法，解决异步编程中的回调地狱问题，让代码更易维护。</p>
+        <a href="#" class="article-btn">阅读更多</a>
+      </div>
+      <!-- 文章卡片4 -->
+      <div class="article-card">
+        <h3 class="article-title">前端性能优化的10个实用技巧</h3>
+        <span class="article-date">2025-12-10</span>
+        <p class="article-desc">分享前端项目中常见的性能优化手段，包括资源加载、渲染优化等，让你的页面加载更快。</p>
+        <a href="#" class="article-btn">阅读更多</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能/兴趣标签云 -->
+  <section class="tags-section">
+    <h2 class="section-title">技能与兴趣</h2>
+    <div class="tags-cloud">
+      <span class="tag tag-1">HTML5</span>
+      <span class="tag tag-2">CSS3</span>
+      <span class="tag tag-3">JavaScript</span>
+      <span class="tag tag-4">Vue.js</span>
+      <span class="tag tag-5">React</span>
+      <span class="tag tag-6">前端工程化</span>
+      <span class="tag tag-1">Node.js</span>
+      <span class="tag tag-2">UI设计</span>
+      <span class="tag tag-3">响应式开发</span>
+      <span class="tag tag-4">数据可视化</span>
+      <span class="tag tag-5">摄影</span>
+      <span class="tag tag-6">旅行</span>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-weibo"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+      <div class="footer-info">
+        <p>© 2026 陈泽的个人博客 版权所有</p>
+        <p>备案号：粤ICP备12345678号-1</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

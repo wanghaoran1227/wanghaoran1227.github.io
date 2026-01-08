@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>陈泽的作品集</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 导航栏样式（全局共用） */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo .code {
+            color: #0066cc;
+        }
+
+        .logo .blog {
+            color: #e63946;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #0066cc;
+        }
+
+        /* 主体样式 */
+        body {
+            background-color: #f3f3f3;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        /* 作品集标题区 */
+        .portfolio-header {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .portfolio-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-desc {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* 项目筛选分类 */
+        .filter-section {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto 40px;
+            text-align: center;
+        }
+
+        .filter-tags {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .filter-tag {
+            padding: 8px 20px;
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tag.active,
+        .filter-tag:hover {
+            background-color: #09d9d9;
+            color: #fff;
+            border-color: #09d9d9;
+        }
+
+        /* 项目卡片网格 */
+        .projects-grid {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-cover {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-name {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .project-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            padding: 4px 12px;
+            background-color: #f0f2f5;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background-color: #165dff;
+            color: #fff;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .project-link:hover {
+            background-color: #0040c9;
+        }
+
+        .project-link.github {
+            background-color: #333;
+        }
+
+        .project-link.github:hover {
+            background-color: #555;
+        }
+
+        /* 页脚样式（全局共用） */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #09d9d9;
+        }
+
+        .footer-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-info p {
+            margin: 5px 0;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
+
+            .portfolio-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏（全局共用） -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <span class="code">Code</span><span class="blog">Blog</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="./首页.html">首页</a></li>
+            <li><a href="./博客.html">博客</a></li>
+            <li><a href="./作品集.html" class="active">作品集</a></li>
+            <li><a href="./关于我.html">关于我</a></li>
+            <li><a href="./文章示例.html">文章示例</a></li>
+        </ul>
+    </nav>
+
+    <!-- 作品集标题 -->
+    <div class="portfolio-header">
+        <h2 class="portfolio-title">陈泽的项目作品集</h2>
+        <p class="portfolio-desc">记录我的技术实践与项目成果</p>
+    </div>
+
+    <!-- 任务2：项目筛选分类 -->
+    <section class="filter-section">
+        <div class="filter-tags">
+            <div class="filter-tag active">全部项目</div>
+            <div class="filter-tag">Web应用</div>
+            <div class="filter-tag">移动端</div>
+            <div class="filter-tag">课程设计</div>
+        </div>
+    </section>
+
+    <!-- 任务3：项目卡片网格 -->
+    <section class="projects-grid">
+        <!-- 项目卡片1：Web应用 -->
+        <div class="project-card">
+            <img src="https://picsum.photos/600/400?random=1" alt="个人博客网站封面" class="project-cover">
+            <div class="project-content">
+                <h3 class="project-name">个人博客网站</h3>
+                <p class="project-desc">基于Vue.js开发的响应式个人博客，支持文章分类、评论互动与深色模式切换。</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Element UI</span>
+                    <span class="tech-tag">Markdown</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> 在线演示</a>
+                    <a href="#" class="project-link github"><i class="fab fa-github"></i> 源码</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目卡片2：移动端 -->
+        <div class="project-card">
+            <img src="https://picsum.photos/600/400?random=2" alt="校园生活APP封面" class="project-cover">
+            <div class="project-content">
+                <h3 class="project-name">校园生活APP</h3>
+                <p class="project-desc">React Native开发的校园服务应用，包含课程表、失物招领、校园公告等功能。</p>
+                <div class="project-tech">
+                    <span class="tech-tag">React Native</span>
+                    <span class="tech-tag">Redux</span>
+                    <span class="tech-tag">Node.js</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> 在线演示</a>
+                    <a href="#" class="project-link github"><i class="fab fa-github"></i> 源码</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目卡片3：课程设计 -->
+        <div class="project-card">
+            <img src="https://picsum.photos/600/400?random=3" alt="图书管理系统封面" class="project-cover">
+            <div class="project-content">
+                <h3 class="project-name">图书管理系统</h3>
+                <p class="project-desc">Java Web课程设计作品，实现图书的增删改查、借阅归还等图书馆管理功能。</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">Spring Boot</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> 在线演示</a>
+                    <a href="#" class="project-link github"><i class="fab fa-github"></i> 源码</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚（全局共用） -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-info">
+                <p>© 2026 陈泽的个人博客 版权所有</p>
+                <p>备案号：粤ICP备12345678号-1</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

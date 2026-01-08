@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>所有文章 - 陈泽的个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 导航栏样式（全局共用） */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo .code {
+            color: #0066cc;
+        }
+
+        .logo .blog {
+            color: #e63946;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #0066cc;
+        }
+
+        /* 主体样式 */
+        body {
+            background-color: #f3f3f3;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        /* 文章列表页容器 */
+        .blog-list-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto 80px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 页面标题与描述 */
+        .page-header {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 20px 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .page-desc {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* 文章筛选区 */
+        .filter-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            min-width: 150px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-tag {
+            padding: 6px 12px;
+            border: 1px solid #09d9d9;
+            border-radius: 20px;
+            color: #09d9d9;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tag.active,
+        .filter-tag:hover {
+            background-color: #09d9d9;
+            color: #fff;
+        }
+
+        /* 文章列表区 */
+        .articles-list {
+            flex: 3;
+        }
+
+        .article-item {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s;
+        }
+
+        .article-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .article-title {
+            font-size: 1.6rem;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .article-title:hover {
+            color: #09d9d9;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #999;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .article-excerpt {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .article-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .article-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 分页组件 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .page-btn.active,
+        .page-btn:hover {
+            background-color: #09d9d9;
+            color: #fff;
+            border-color: #09d9d9;
+        }
+
+        /* 侧边栏（可选） */
+        .sidebar {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .sidebar-module {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .module-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hot-articles {
+            list-style: none;
+        }
+
+        .hot-article-item {
+            margin-bottom: 15px;
+        }
+
+        .hot-article-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .hot-article-link:hover {
+            color: #09d9d9;
+        }
+
+        .category-stats {
+            list-style: none;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .category-name {
+            color: #333;
+        }
+
+        .category-count {
+            color: #999;
+        }
+
+        /* 页脚（全局共用） */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #09d9d9;
+        }
+
+        .footer-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-info p {
+            margin: 5px 0;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
+
+            .blog-list-container {
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏（全局共用） -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <span class="code">Code</span><span class="blog">Blog</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="./首页.html">首页</a></li>
+            <li><a href="./博客.html" class="active">博客</a></li>
+            <li><a href="./作品集.html">作品集</a></li>
+            <li><a href="./关于我.html">关于我</a></li>
+            <li><a href="./文章示例.html">文章示例</a></li>
+        </ul>
+    </nav>
+
+    <!-- 页面标题与描述 -->
+    <div class="page-header">
+        <h1 class="page-title">所有文章</h1>
+        <p class="page-desc">记录思想的轨迹，分享技术与生活的点滴</p>
+    </div>
+
+    <!-- 文章列表页主体 -->
+    <div class="blog-list-container">
+        <!-- 文章列表区 -->
+        <div class="articles-list">
+            <!-- 文章筛选区 -->
+            <div class="filter-section">
+                <span class="filter-label">分类筛选：</span>
+                <select class="filter-select">
+                    <option value="all">全部分类</option>
+                    <option value="frontend">前端开发</option>
+                    <option value="essay">随笔感悟</option>
+                    <option value="tech">技术杂谈</option>
+                </select>
+
+                <span class="filter-label">标签筛选：</span>
+                <div class="filter-tags">
+                    <span class="filter-tag active">全部标签</span>
+                    <span class="filter-tag">HTML/CSS</span>
+                    <span class="filter-tag">JavaScript</span>
+                    <span class="filter-tag">Vue.js</span>
+                    <span class="filter-tag">生活记录</span>
+                </div>
+            </div>
+
+            <!-- 文章列表 -->
+            <div class="article-item">
+                <div class="article-header">
+                    <a href="#" class="article-title">从零基础到入职九色传媒：我的前端学习之路</a>
+                </div>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="far fa-calendar-alt"></i> 2026-01-01</span>
+                    <span class="article-meta-item"><i class="fas fa-folder-open"></i> 随笔感悟</span>
+                    <span class="article-meta-item"><i class="fas fa-tags"></i> 生活记录</span>
+                </div>
+                <p class="article-excerpt">
+                    作为一名非科班出身的开发者，我用了8个月的时间从HTML/CSS零基础，到熟练掌握JavaScript、Vue.js，最终成功入职九色传媒担任前端开发工程师。这篇文章里我会分享我的学习计划、踩过的坑，以及面试九色传媒时的准备过程和经验总结，希望能给同样想入行的朋友一些参考...
+                </p>
+                <div class="article-stats">
+                    <span class="article-stat"><i class="fas fa-eye"></i> 2180</span>
+                    <span class="article-stat"><i class="far fa-comment"></i> 68</span>
+                </div>
+            </div>
+
+            <div class="article-item">
+                <div class="article-header">
+                    <a href="#" class="article-title">九色传媒项目实战：用Flex布局重构移动端导航栏</a>
+                </div>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="far fa-calendar-alt"></i> 2025-12-25</span>
+                    <span class="article-meta-item"><i class="fas fa-folder-open"></i> 前端开发</span>
+                    <span class="article-meta-item"><i class="fas fa-tags"></i> CSS</span>
+                </div>
+                <p class="article-excerpt">
+                    入职九色传媒后接手的第一个正式任务就是重构公司老项目的移动端导航栏，原有的float布局兼容性差、适配繁琐，我用Flex布局重新实现了这套导航，不仅代码量减少了40%，还解决了不同机型的适配问题。这篇文章会详细拆解需求分析、布局思路、响应式断点设置，以及在公司代码规范下的实现细节...
+                </p>
+                <div class="article-stats">
+                    <span class="article-stat"><i class="fas fa-eye"></i> 1560</span>
+                    <span class="article-stat"><i class="far fa-comment"></i> 42</span>
+                </div>
+            </div>
+
+            <div class="article-item">
+                <div class="article-header">
+                    <a href="#" class="article-title">九色传媒数据可视化项目：Promise异步处理实战</a>
+                </div>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="far fa-calendar-alt"></i> 2025-12-20</span>
+                    <span class="article-meta-item"><i class="fas fa-folder-open"></i> 技术杂谈</span>
+                    <span class="article-meta-item"><i class="fas fa-tags"></i> JavaScript</span>
+                </div>
+                <p class="article-excerpt">
+                    在九色传媒负责数据可视化项目时，遇到了大量异步接口请求的场景，最初用回调函数写的代码嵌套层级深、难以维护，后来改用Promise+async/await重构，代码可读性和可维护性大幅提升。这篇文章结合项目中的真实场景，讲解Promise的核心用法、异常处理方案，以及如何解决多个接口依赖的异步请求问题...
+                </p>
+                <div class="article-stats">
+                    <span class="article-stat"><i class="fas fa-eye"></i> 1820</span>
+                    <span class="article-stat"><i class="far fa-comment"></i> 56</span>
+                </div>
+            </div>
+
+            <div class="article-item">
+                <div class="article-header">
+                    <a href="#" class="article-title">入职九色传媒3个月：前端新人的成长与反思</a>
+                </div>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="far fa-calendar-alt"></i> 2025-12-15</span>
+                    <span class="article-meta-item"><i class="fas fa-folder-open"></i> 随笔感悟</span>
+                    <span class="article-meta-item"><i class="fas fa-tags"></i> 生活记录</span>
+                </div>
+                <p class="article-excerpt">
+                    加入九色传媒这个团队已经3个月了，从最初的小心翼翼、害怕出错，到现在能独立负责小型模块的开发，这段时间里我不仅在技术上快速成长，也学会了如何和产品、后端同事高效协作。这篇文章记录我在公司遇到的技术难题、团队协作中的收获，以及对自己未来1年的职业规划，也感谢公司前辈们的耐心指导...
+                </p>
+                <div class="article-stats">
+                    <span class="article-stat"><i class="fas fa-eye"></i> 1440</span>
+                    <span class="article-stat"><i class="far fa-comment"></i> 38</span>
+                </div>
+            </div>
+
+            <div class="article-item">
+                <div class="article-header">
+                    <a href="#" class="article-title">九色传媒前端工程化实践：Vue3+Vite项目优化总结</a>
+                </div>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="far fa-calendar-alt"></i> 2025-12-10</span>
+                    <span class="article-meta-item"><i class="fas fa-folder-open"></i> 前端开发</span>
+                    <span class="article-meta-item"><i class="fas fa-tags"></i> Vue.js</span>
+                </div>
+                <p class="article-excerpt">
+                    九色传媒今年开始全面从Vue2迁移到Vue3+Vite技术栈，我参与了公司核心项目的迁移和优化工作。在这个过程中，我们解决了依赖兼容、打包体积过大、热更新慢等问题，最终实现项目启动速度提升80%，打包体积减少35%。这篇文章分享我们的迁移步骤、遇到的坑和对应的解决方案，以及Vite的一些实用优化技巧...
+                </p>
+                <div class="article-stats">
+                    <span class="article-stat"><i class="fas fa-eye"></i> 1680</span>
+                    <span class="article-stat"><i class="far fa-comment"></i> 45</span>
+                </div>
+            </div>
+
+            <!-- 分页组件 -->
+            <div class="pagination">
+                <a href="#" class="page-btn">上一页</a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">下一页</a>
+            </div>
+        </div>
+
+        <!-- 侧边栏（可选） -->
+        <div class="sidebar">
+            <!-- 热门文章模块 -->
+            <div class="sidebar-module">
+                <h3 class="module-title">热门文章</h3>
+                <ul class="hot-articles">
+                    <li class="hot-article-item">
+                        <a href="#" class="hot-article-link">从零基础到入职九色传媒：我的前端学习之路</a>
+                    </li>
+                    <li class="hot-article-item">
+                        <a href="#" class="hot-article-link">九色传媒数据可视化项目：Promise异步处理实战</a>
+                    </li>
+                    <li class="hot-article-item">
+                        <a href="#" class="hot-article-link">九色传媒前端工程化实践：Vue3+Vite项目优化总结</a>
+                    </li>
+                    <li class="hot-article-item">
+                        <a href="#" class="hot-article-link">入职九色传媒3个月：前端新人的成长与反思</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 文章分类统计模块 -->
+            <div class="sidebar-module">
+                <h3 class="module-title">分类统计</h3>
+                <ul class="category-stats">
+                    <li class="category-item">
+                        <span class="category-name">前端开发</span>
+                        <span class="category-count">12篇</span>
+                    </li>
+                    <li class="category-item">
+                        <span class="category-name">随笔感悟</span>
+                        <span class="category-count">8篇</span>
+                    </li>
+                    <li class="category-item">
+                        <span class="category-name">技术杂谈</span>
+                        <span class="category-count">5篇</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚（全局共用） -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-info">
+                <p>© 2026 陈泽的个人博客 版权所有</p>
+                <p>备案号：粤ICP备12345678号-1</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

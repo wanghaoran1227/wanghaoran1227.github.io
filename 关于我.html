@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>关于陈泽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 导航栏（全局共用） */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo .code {
+            color: #0066cc;
+        }
+
+        .logo .blog {
+            color: #e63946;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #0066cc;
+        }
+
+        /* 主体样式 */
+        body {
+            background-color: #f3f3f3;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        /* 通用容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #09d9d9;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* 任务2：个人详细介绍（图文混排） */
+        .profile-intro {
+            background-color: #fff;
+            padding: 40px 60px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .intro-img {
+            flex-shrink: 0;
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 4px solid #09d9d9;
+        }
+
+        .intro-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-content {
+            flex: 1;
+        }
+
+        .intro-item {
+            margin-bottom: 20px;
+        }
+
+        .intro-item h3 {
+            font-size: 1.3rem;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .intro-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 任务3：技能图表 */
+        .skills-chart {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .skill-bar {
+            height: 12px;
+            background-color: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #09d9d9, #0066cc);
+        }
+
+        /* 任务4：时间轴 */
+        .timeline {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #09d9d9;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 0 40px;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0066cc;
+            border: 3px solid #fff;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+        }
+
+        .timeline-date {
+            color: #09d9d9;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            color: #666;
+        }
+
+        /* 任务5：联系方式 */
+        .contact-info {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .contact-list {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+
+        .contact-item i {
+            color: #0066cc;
+            font-size: 1.2rem;
+        }
+
+        /* 任务6：页脚（全局共用） */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #09d9d9;
+        }
+
+        .footer-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
+
+            .profile-intro {
+                flex-direction: column;
+                padding: 30px 20px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 50px;
+                text-align: left;
+            }
+
+            .timeline-dot {
+                left: 10px !important;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .skills-chart,
+            .timeline,
+            .contact-info {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 任务1：导航栏（全局共用） -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <span class="code">Code</span><span class="blog">Blog</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="./首页.html">首页</a></li>
+            <li><a href="./博客.html">博客</a></li>
+            <li><a href="./作品集.html">作品集</a></li>
+            <li><a href="./关于我.html" class="active">关于我</a></li>
+            <li><a href="./文章示例.html">文章示例</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- 任务2：个人详细介绍 -->
+        <section class="profile-intro">
+            <div class="intro-img">
+                <img src="f81f85316f791c550dfb93876f7a7d10.jpg" alt="陈泽照片">
+            </div>
+            <div class="intro-content">
+                <div class="intro-item">
+                    <h3>教育背景</h3>
+                    <p>毕业于XX大学计算机科学与技术专业，在校期间主修前端开发、数据结构等课程，曾获得校级编程竞赛二等奖。</p>
+                </div>
+                <div class="intro-item">
+                    <h3>职业路径</h3>
+                    <p>曾在XX科技公司担任前端开发实习生，参与企业官网重构项目；现就职于XX互联网公司，负责移动端H5页面及管理系统前端开发。</p>
+                </div>
+                <div class="intro-item">
+                    <h3>兴趣爱好</h3>
+                    <p>平时喜欢摄影记录生活、旅行探索城市，也会利用业余时间学习UI设计和后端基础技术，提升全栈能力。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 任务3：技能图表 -->
+        <section class="skills-chart">
+            <h2 class="section-title">技能展示</h2>
+            <div class="skill-item">
+                <div class="skill-name">
+                    <span>HTML5/CSS3</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">
+                    <span>JavaScript</span>
+                    <span>85%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">
+                    <span>Vue.js</span>
+                    <span>80%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">
+                    <span>React</span>
+                    <span>70%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 70%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">
+                    <span>Node.js</span>
+                    <span>60%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 60%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 任务4：时间轴 -->
+        <section class="timeline">
+            <h2 class="section-title">成长里程碑</h2>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2022.09</div>
+                <div class="timeline-content">进入XX大学计算机专业，开始接触编程</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2024.03</div>
+                <div class="timeline-content">自学前端技术，完成第一个个人博客网站</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2024.07</div>
+                <div class="timeline-content">加入XX科技公司，担任前端开发实习生</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2025.06</div>
+                <div class="timeline-content">毕业并入职XX互联网公司，成为正式前端开发工程师</div>
+            </div>
+        </section>
+
+        <!-- 任务5：联系方式 -->
+        <section class="contact-info">
+            <h2 class="section-title">联系我</h2>
+            <div class="contact-list">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>chenze@example.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <span>github.com/chenze</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-weibo"></i>
+                    <span>微博：@陈泽的前端日常</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn：陈泽</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 任务6：页脚（全局共用） -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-info">
+                <p>© 2026 陈泽的个人页面 版权所有</p>
+                <p>备案号：粤ICP备12345678号-1</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
